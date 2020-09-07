@@ -42,6 +42,26 @@
      <mappers>
          <mapper resource="mapper/DemoMapper.xml"></mapper>
      </mappers>
+  <!--<configuration>
+    ......
+    <mappers>
+      &lt;!&ndash; 第一种方式：通过resource指定
+      <mapper resource="com/dy/dao/userDao.xml"/>
 
+      &lt;!&ndash; 第二种方式， 通过class指定接口，进而将接口与对应的xml文件形成映射关系
+              不过，使用这种方式必须保证 接口与mapper文件同名(不区分大小写)，
+              我这儿接口是UserDao,那么意味着mapper文件为UserDao.xml
+      <mapper class="com.dy.dao.UserDao"/>
+
+
+      &lt;!&ndash; 第三种方式，直接指定包，自动扫描，与方法二同理
+      <package name="com.dy.dao"/>
+
+      &lt;!&ndash; 第四种方式：通过url指定mapper文件位置
+      <mapper url="file://........"/>
+
+    </mappers>
+    ......
+  </configuration>-->
 </configuration>
 

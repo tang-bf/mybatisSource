@@ -113,6 +113,10 @@ public class XMLConfigBuilder extends BaseBuilder {
       //objectFactory自定义实例化对象的行为  比如说返回User 对象
       objectFactoryElement(root.evalNode("objectFactory"));
       //MateObject   方便反射操作实体类的对象
+      // MetaObject 主要是对实例化的对象进行赋值和取值用的，
+      // 其底层也是利用的反射获取实例的 getter 和 setter 方法进行赋值，
+      // 而这些 getter 和 setter 方法其实都是和 MetaObject 名类似的 MetaClass 通过反射去获取的，
+      // 所以 MetaClass 主要是用来保存 Class 的一些元信息的
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
       settingsElement(settings);
