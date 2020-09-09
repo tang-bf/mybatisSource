@@ -28,7 +28,7 @@ import java.util.Map;
  *
  */
 //@Alias("DemoMapper") 别名是不区分大小写的，会都给你转成小写
-  @Mapper()
+ // @Mapper()
 public interface DemoMapper {
 
 //    @Select()

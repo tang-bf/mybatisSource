@@ -19,6 +19,6 @@ package com;
  *
  */
 public interface Test1 {
-
+  public  void hello(String name ,String age);
 
 }

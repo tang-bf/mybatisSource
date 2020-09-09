@@ -20,8 +20,8 @@
 <mapper   namespace="com.TestMapper">
     <cache
     ></cache>
-
-    <select     id="selectAll"    parameterType="String" resultType="Map">
+    <!--在select 中添加< flushCache=" "  useCache="" > -->
+    <select   id="selectAll"    parameterType="String" resultType="Map">
 
         select * from test WHERE id =#{name} and 1=#{age}
 
