@@ -22,6 +22,7 @@ import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.cache.TransactionalCacheManager;
 import org.apache.ibatis.cursor.Cursor;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
@@ -96,6 +97,33 @@ public class CachingExecutor implements Executor {
   public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
       throws SQLException {
     //二级缓存的Cache
+    //开启二级缓存后
+//    synchronzedCache
+//      delegate  loggingcache
+//    if (log.isDebugEnabled()) { spring 4和mybatis整合后
+//      log.debug("Cache Hit Ratio [" + getId() + "]: " + getHitRatio());
+//    }
+//        log slf4jimpl
+//          logger log4jloggerAdapter
+//      delegate serializedcache
+//        delegate lrucache  LruCache使用到了LinkedHashMap
+//          delegate Perpetualcache
+   // java.util.logging.Logger INFO 级别
+    // Spring4使用的是common-logging 原生的JCL，所以在有log4j的时候使用log4j打印日志，没有的时候使用JUL打印日志。
+    //spring 5 spring-jcl，看名字就知道是spring自造的包，jcl，更是标注了，它使用的是JCL日志体系。
+    //在spring5中，依然使用的是JCL，但是不是原生的，是经过改造的JCL，默认使用的是JUL，而原生JCL中默认使用的是log4j.
+    //spring5+mybatis+log4j sql日志不打印  jul级别是info mybatis 又要求是debug级别
+    //spring4 +mybatis+log4j 则可以打印
+    //LogFactory
+//    static {
+//      //在用户没有指定日志的情况下
+//      tryImplementation(LogFactory::useSlf4jLogging);//先slf4j
+//      tryImplementation(LogFactory::useCommonsLogging);//jcl
+//      tryImplementation(LogFactory::useLog4J2Logging);//log4j2
+//      tryImplementation(LogFactory::useLog4JLogging);//log4j
+//      tryImplementation(LogFactory::useJdkLogging);//jul
+//      tryImplementation(LogFactory::useNoLogging);//没有日志
+//    }
     Cache cache = ms.getCache();
     if (cache != null) {
       flushCacheIfRequired(ms);

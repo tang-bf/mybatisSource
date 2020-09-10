@@ -29,7 +29,7 @@ public final class LogFactory {
   public static final String MARKER = "MYBATIS";
 
   private static Constructor<? extends Log> logConstructor;
-
+//LogFactory
   static {
     //在用户没有指定日志的情况下
     tryImplementation(LogFactory::useSlf4jLogging);//先slf4j
