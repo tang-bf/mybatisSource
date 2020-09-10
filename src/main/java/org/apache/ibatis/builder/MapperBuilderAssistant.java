@@ -132,6 +132,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
     Cache cache = new CacheBuilder(currentNamespace)
         .implementation(valueOrDefault(typeClass, PerpetualCache.class))
         .addDecorator(valueOrDefault(evictionClass, LruCache.class))
+      //配置了flushInterval 才会装饰用ScheduledCache
         .clearInterval(flushInterval)
         .size(size)
         .readWrite(readWrite)

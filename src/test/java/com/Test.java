@@ -41,9 +41,15 @@ import java.util.Map;
  * 1.<settings> 二级缓存全局默认是打开的，但是各个mapper内的是关闭的，二级缓存对事物的处理是个难点TransactionalCacheManager tcm  tcm.getObject(cache, key);
  * baseexecutor cacheexecutor (二级缓存打开时用的)
  *  可配置flushCache=" " 默认正删改会刷新查询不会刷新
- *     <!--开启二级缓存-->
+ *     <!--开启二级缓存--> configuration.setCacheEnabled(booleanValueOf(props.getProperty("cacheEnabled"), true));
+ *     全局的默认是配置开启的
  *     <setting name="cacheEnabled" value="true"/>
  * </settings>
+ * Mybatis的官方文档中可以看出已经默认开启了二级缓存
+ * 在使用缓存的时候要记得序列化实体类，否则会抛出实体类未序列化异常
+ * 级缓存是基于namespace级别的，在同一个Mapper下有效
+ * 所有的数据都会先放在一级缓存中
+ * 只有当会话提交或关闭时，才会提交到二级缓存中
  * 2.需要将映射的javapojo类实现序列化
  *           class Student implements Serializable{}
  * 3.<!--开启本Mapper的namespace下的二级缓存-->
@@ -64,6 +70,18 @@ import java.util.Map;
  * 办法修改缓存，他的默认值是false，不允许我们修改
  * 一级缓存   MappedStatement 类的 id 、分页属性、 SQL 再句、
  * 查询参数、 environmentid 作为构 cacheKey 参数
+ * 场景问题：原来数据库abc三条数据，插入一条d,数据为abcd，查询，缓存则为abcd,最后提交事务失败，数据库会回滚，
+ * 但是缓存不会，mybatis怎么处理的？
+ * TransactionalCacheManager final Map<Cache, TransactionalCache> transactionalCaches = new HashMap<>();
+ * TransactionalCache
+ * //缓存对象
+ *   private final Cache delegate;
+ *   //是否需要清空提交空间的标识
+ *   private boolean clearOnCommit;
+ *   //所有待提交的缓存
+ *   private final Map<Object, Object> entriesToAddOnCommit;
+ *   //未命中的缓存集合，用于统计缓存命中率
+ *   private final Set<Object> entriesMissedInCache;
  */
 public class Test {
 

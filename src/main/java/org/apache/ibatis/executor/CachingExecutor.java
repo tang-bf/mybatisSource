@@ -124,15 +124,23 @@ public class CachingExecutor implements Executor {
 //      tryImplementation(LogFactory::useJdkLogging);//jul
 //      tryImplementation(LogFactory::useNoLogging);//没有日志
 //    }
+//    //ScheduledCache 执行增删改查的时候才会去清空 并不是向传统的那种开启后台定时线程去监测
+//    @Override
+//    public void putObject(Object key, Object object) {
+//      clearWhenStale();
+//      delegate.putObject(key, object);
+//    }
     Cache cache = ms.getCache();
     if (cache != null) {
       flushCacheIfRequired(ms);
       if (ms.isUseCache() && resultHandler == null) {
         ensureNoOutParams(ms, boundSql);
         @SuppressWarnings("unchecked")
+        //  从tcm中获取缓存的列表,把获取值的职责一路传递,最终到perpetualCache
         List<E> list = (List<E>) tcm.getObject(cache, key);
         if (list == null) {
           list = delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+          ///如果查询到数据，则调用tcm.putObject方法，往缓存中放入值;不是直接操作缓存，只是在把这次的数据和key放入待提交的Map中
           tcm.putObject(cache, key, list); // issue #578 and #116
         }
         return list;
