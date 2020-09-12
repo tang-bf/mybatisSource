@@ -1,3 +1,5 @@
+package com;
+
 /**
  * @ProjectName: mybatisStudy
  * @Package: PACKAGE_NAME
@@ -14,5 +16,5 @@
   //而接口是没有方法体的，所以没有局部变量表 加上之后-parameters  接口也会有这个methodparameters
   //就能拿到方法参数名  Parameter
 public interface TestInterface {
-  public void TestInterface (double d);
+  public void TestInterface(double d);
 }

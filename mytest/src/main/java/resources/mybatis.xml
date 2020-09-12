@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+       Copyright ${license.git.copyrightYears} the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!-- 和spring整合后 environments配置将废除 -->
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理 -->
+            <transactionManager type="JDBC" />
+            <!-- 数据库连接池 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/tbh?characterEncoding=utf-8" />
+                <property name="username" value="root" />
+                <property name="password" value="root" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 加载mapper.xml -->
+     <mappers>
+         <mapper resource="mapper/DemoMapper.xml"></mapper>
+     </mappers>
+  <!--<configuration>
+    ......
+    <mappers>
+      &lt;!&ndash; 第一种方式：通过resource指定
+      <mapper resource="com/dy/dao/userDao.xml"/>
+
+      &lt;!&ndash; 第二种方式， 通过class指定接口，进而将接口与对应的xml文件形成映射关系
+              不过，使用这种方式必须保证 接口与mapper文件同名(不区分大小写)，
+              我这儿接口是UserDao,那么意味着mapper文件为UserDao.xml
+      <mapper class="com.dy.dao.UserDao"/>
+
+
+      &lt;!&ndash; 第三种方式，直接指定包，自动扫描，与方法二同理
+      <package name="com.dy.dao"/>
+
+      &lt;!&ndash; 第四种方式：通过url指定mapper文件位置
+      <mapper url="file://........"/>
+
+    </mappers>
+    ......
+  </configuration>-->
+</configuration>
+

@@ -1,3 +1,5 @@
+package com;
+
 /**
  * @ProjectName: mybatisStudy
  * @Package: PACKAGE_NAME

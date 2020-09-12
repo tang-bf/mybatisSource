@@ -113,7 +113,7 @@ public class CachingExecutor implements Executor {
     //spring 5 spring-jcl，看名字就知道是spring自造的包，jcl，更是标注了，它使用的是JCL日志体系。
     //在spring5中，依然使用的是JCL，但是不是原生的，是经过改造的JCL，默认使用的是JUL，而原生JCL中默认使用的是log4j.
     //spring5+mybatis+log4j sql日志不打印  jul级别是info mybatis 又要求是debug级别
-    //spring4 +mybatis+log4j 则可以打印
+    //spring4 +mybatis+log4j 则可以打印 已在testlog项目验证
     //LogFactory
 //    static {
 //      //在用户没有指定日志的情况下
@@ -130,6 +130,35 @@ public class CachingExecutor implements Executor {
 //      clearWhenStale();
 //      delegate.putObject(key, object);
 //    }
+    // jul 日志实现
+    // log4j 日志实现
+    //log4j2 中的AsyncLogger的内部使用了Disruptor框架。
+    //Disruptor简介
+    //Disruptor是英国外汇交易公司LMAX开发的一个高性能队列，基于Disruptor开发的系统单线程能支撑每秒600万订单。
+    //
+    //目前，包括Apache Strom、Log4j2在内的很多知名项目都应用了Disruptor来获取高性能。
+    //Disruptor框架内部核心数据结构为RingBuffer，其为无锁环形队列。
+    //
+    //单线程每秒能够处理600万订单，Disruptor为什么这么快？
+    //
+    //a.lock-free-使用了CAS来实现线程安全
+    //ArrayBlockingQueue使用锁实现并发控制，当get或put时，当前访问线程将上锁，当多生产者、多消费者的大量并发情形下，由于锁竞争、线程切换等，会有性能损失。
+    //Disruptor通过CAS实现多生产者、多消费者对RingBuffer的并发访问。CAS相当于乐观锁，其性能优于Lock的性能。
+    //
+    //b.使用缓存行填充解决伪共享问题
+    //计算机体系结构中，内存的访问速度远远低于CPU的运行速度，在内存和CPU之间，加入Cache，CPU首先访问Cache中的数据，CaChe未命中，才访问内存中的数据。
+    //伪共享：Cache是以缓存行（cache line）为单位存储的，当多个线程修改互相独立的变量时，如果这些变量共享同一个缓存行，就会无意中影响彼此的性能。
+    //关于伪共享的深度分析，可参考《伪共享，并发编程的性能杀手》这篇文章。
+    //
+    //日志输出方式
+    //sync	        同步打印日志，日志输出与业务逻辑在同一线程内，当日志输出完毕，才能进行后续业务逻辑操作
+    //Async Appender	异步打印日志，内部采用ArrayBlockingQueue，对每个AsyncAppender创建一个线程用于处理日志输出。
+    //Async Logger	异步打印日志，采用了高性能并发框架Disruptor，创建一个线程用于处理日志输出。
+    // jcl (jakart commons logging ) 抽象
+    // slf4j 抽象
+    // logback 实现
+    // simplelog  实现
+    //jdbclog 实现
     Cache cache = ms.getCache();
     if (cache != null) {
       flushCacheIfRequired(ms);
